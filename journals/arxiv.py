@@ -2,8 +2,7 @@
 
 from datetime import datetime as tme
 
-from journals import journal
-from journals import article
+from .journals import journal, article
 from bs4 import BeautifulSoup as bs
 import lxml
 import re
