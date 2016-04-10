@@ -43,7 +43,7 @@ from .journals.arxiv import arXiv
 
 def cmds():
     try:
-        for i in sys.argv:
+        for i in range(len(sys.argv)):
             search = arXiv()
             search.find(All=sys.argv[i])
             for j in search.articles:
@@ -53,6 +53,5 @@ def cmds():
 
 
 if __name__ == "__main__":
-    print (sys.path)
     cmds()
 
