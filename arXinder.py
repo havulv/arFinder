@@ -7,12 +7,10 @@
  The results of the search are recorded into a file
  	That file contains the title, link, and relevant classifications
 
-First Steps:
-    [] create a robust object that will handle any journal object
-        [] the arxiv object should be a class inheriting the journals data members and functions
 
-
-
+Next:
+    [] Implement pyqt
+        ((( from PyQt5 import QtWidgets )))
 
  TO DO:
 []	Add other journals to choose from
