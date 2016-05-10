@@ -38,16 +38,62 @@ Next:
 import sys
 from .journals.arxiv import arXiv
 
+def none(dct):
+    """ Handle None types for parameters of journal.find """
+    for i,v in dct.items():
+        if v != None:
+            return False
+    return True
+
 
 def cmds():
-    try:
-        for i in range(len(sys.argv)):
-            search = arXiv()
-            search.find(All=sys.argv[i])
-            for j in search.articles:
-                print (j)
-    except IndexError:
+    """
+    Simple implementation of searching a journal for a specific query (only as it applies to the Arxiv currently)
+    -ti = title
+    -au = author
+    -abs = abstract
+    -co = comment
+    -jr = journal reference
+    -cat = subject category
+    -rn = report number
+    -id = identification number
+    -all = all of the above
+        (All of these parameters are strings)
+
+    Please see the specific class entry on the return value of the journal
+    """
+
+    try: #Can be implemented with a help message [fix this]
+        search = arXiv()
+        SrchPrm = query(sys.argv)
+
+        if none(SrchPrm):
+            raise ValueError("You must input some value -- TODO: implement \
+                                                                help message")
+
+        search.find(ti=SrchPrm['-ti'], au=SrchPrm['-au'], ABS=SrchPrm['-abs'],
+                    co=SrchPrm['-co'] , jr=SrchPrm['-jr'], cat=SrchPrm['-cat'],
+                    rn=SrchPrm['-rn'], ID=SrchPrm['-id'], All=SrchPrm['-all'])
+        for j in search.articles:
+            print (j)
+    except IndexError as e:
+        print ("IndexError: some shit went down {}".format(e))
         sys.exit(0)
+
+def query(args):
+    """
+    Parse command line arguments for search query (only as it applies to arxiv)
+    """
+
+    params = {'-ti': None, '-au': None, '-abs': None, '-co': None, '-jr': None,
+                            '-cat': None, '-rn': None, '-id': None,'-all': None }
+
+    for i in range(len(args)):
+        if args[i] in  params.keys():
+            if args[i+1] not in params.keys():
+                params[args[i]] = args[i+1]
+
+    return params
 
 
 if __name__ == "__main__":
