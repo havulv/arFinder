@@ -1,5 +1,13 @@
 #!/usr/bin/python
 
+"""
+A class that looks through the arxiv to find journal articles
+and other specifcations.
+
+Inherits object properties from journal and article class
+
+"""
+
 from datetime import datetime as tme
 
 from .journals import journal, article
@@ -8,16 +16,28 @@ import lxml
 import re
 
 class arXiv(journal):
+    """
+    A class for implementing a search of the arxiv that follows the specification
+    set out by the arxiv API.
 
-    # In accordance with the ArXiv API
+    Currently supports queries for specifc search_query but does not support
+    boolean entries.
+
+    """
+
     def __init__(self):
+        """ Inherits journal members """
+
         super(arXiv, self).__init__()
 
         self.name = u"ArXiv.org"
         self.base_url = u"http://export.arxiv.org/api/query?"
 
+
     def _bldquery(self, ti=None, au=None, ABS=None, co=None,
                 jr=None, cat=None, rn=None, ID=None, All=None):
+        """ Builds the query to search the arxiv """
+
         srch_str = "search_query="
 
         srchDict = {'ti':ti,'au':au,'abs':ABS,'co':co,'jr':jr,'cat':cat,'rn':rn,'id':ID,'all':All}
@@ -40,6 +60,8 @@ class arXiv(journal):
 
 
     def _clean(self, article, tag):
+        """ Clean the return values from the arxiv """
+
         article.title = tag.find(re.compile('title')).string
         article.updated = tme.strptime(tag.find(re.compile('updated'
                                             )).string, "%Y-%m-%dT%H:%M:%SZ")
@@ -58,15 +80,21 @@ class arXiv(journal):
 
 
     def _search(self):
+        """ Do the actual searching of the arxiv """
+
         html = bs(self._getmain(), 'lxml')
         for tag in html.find_all(re.compile("entry")):
             curArt = article()
             self.articles.append(curArt)
             self._clean(self.articles[-1], tag)
 
+
     def find(self, ti=None, au=None, ABS=None, co=None, jr=None, cat=None, rn=None, ID=None, All=None):
+        """ The public method to actually find the articles """
+
         self._bldquery(ti,au,ABS,co,jr,cat,rn,ID,All)
         self._search()
+
 
 if __name__ == "__main__":
     M = arXiv()

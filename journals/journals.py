@@ -18,6 +18,9 @@ from datetime import datetime
 import requests
 
 class journal(object):
+    """
+    The basic structure of journal objects
+    """
 
     def __init__(self):
         self.articles = []
@@ -26,11 +29,14 @@ class journal(object):
         self.search_url = u""
         self.topics = []
 
+
     def __repr__(self):
         return u"{0}".format(self.name)
 
+
     def __str__(self):
         return u"{0} {1}".format(self.name, self.base_URL)
+
 
     def _getmain(self):
         req = requests.get(self.search_url, {'Journal Aggregation' : 'https://github.com/jandersen7/ArxivGet'})
@@ -47,6 +53,9 @@ method will need to be overwritten for each class.
 """
 
 class article(object):
+    """
+    The basic structure of article objects -- Journals have articles
+    """
 
     def __init__(self):
         self.title = u""
@@ -58,8 +67,10 @@ class article(object):
         self.authors = []
         self.topics = []
 
+
     def __repr__(self):
         return u"{0}".format(self.title)
+
 
     def __str__(self):
         return u"{0}".format(self.title)
