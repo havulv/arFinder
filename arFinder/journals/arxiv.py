@@ -7,7 +7,7 @@ and other specifcations.
 Inherits object properties from journal and article class
 
 """
-
+from __future__ import print_function
 from datetime import datetime as tme
 
 from .journals import journal, article

@@ -39,7 +39,7 @@ class journal(object):
 
 
     def _getmain(self):
-        req = requests.get(self.search_url, {'Journal Aggregation' : 'https://github.com/jandersen7/ArxivGet'})
+        req = requests.get(self.search_url, {'Journal Aggregation' : 'https://github.com/jandersen7/arFinder'})
         req.raise_for_status()
         return req.text
 
