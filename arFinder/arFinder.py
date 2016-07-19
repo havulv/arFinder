@@ -45,7 +45,7 @@ def none(dct):
     return True
 
 
-def cmds():
+def cmds(lookup=sys.argv):
     """
     Simple implementation of searching a journal for a specific query (only as it applies to the Arxiv currently)
     -ti = title
@@ -64,7 +64,7 @@ def cmds():
 
     try: #Can be implemented with a help message [fix this]
         search = arXiv()
-        SrchPrm = query(sys.argv)
+        SrchPrm = query(lookup)
 
         if none(SrchPrm):
             raise ValueError("You must input some value -- TODO: implement \
@@ -73,11 +73,10 @@ def cmds():
         search.find(ti=SrchPrm['-ti'], au=SrchPrm['-au'], ABS=SrchPrm['-abs'],
                     co=SrchPrm['-co'] , jr=SrchPrm['-jr'], cat=SrchPrm['-cat'],
                     rn=SrchPrm['-rn'], ID=SrchPrm['-id'], All=SrchPrm['-all'])
-        for j in search.articles:
-            print (j)
+        return(search.articles)
+
     except IndexError as e:
-        print ("IndexError: some shit went down {}".format(e))
-        sys.exit(0)
+        return("An error occurred %s, please implement logging and unit testing." % e)
 
 def query(args):
     """
@@ -96,5 +95,6 @@ def query(args):
 
 
 if __name__ == "__main__":
-    cmds()
+    for i in cmds():
+        print(i)
 

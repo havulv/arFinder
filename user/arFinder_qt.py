@@ -12,50 +12,62 @@
 '''
 
 
-
 from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 # Why would you import everything? Doesn't that seem a little braggerty
 
-class Form(QWidget):
+class Articles(QWidget):
 
     def __init__(self, parent=None):
-        super(Form, self).__init__(parent)
+        super(Articles, self).__init__(parent)
 
-        nameLabel = QLabel("Name:")
-        self.nameLine = QLineEdit()
-        self.submitButton = QPushButton("&amp;Submit")
+        # Table initialization
+        self.article_table = QTableWidget()
+        self.article = QTableWidgetItem()
 
-        buttonL1 = QVBoxLayout()
-        buttonL1.addWidget(nameLabel)
-        buttonL1.addWidget(self.nameLine)
-        buttonL1.addWidget(self.submitButton)
+        # set selection mode for contiguous cell
+        self.article_table.setSelectionMode(
+                QAbstractItemView.ContiguousSelection)
 
-        self.submitButton.clicked.connect(self.submitContact)
 
-        mainLayout = QGridLayout()
-        mainLayout.addLayout(buttonL1,0,1)
+        self.article_table.setWindowTitle("arFinder")
+        self.article_table.resize(300,300)
+        self.article_table.setRowCount(6)
+        self.article_table.setColumnCount(6)
 
-        self.setLayout(mainLayout)
-        self.setWindowTitle("Hello Qt")
+        self.article_table.setSpan(0,1,5,4)
 
-    def submitContact(self):
-        name = self.nameLine.text()
+        self.article_table.setItem(0,0,QTableWidgetItem("First Article"))
+        self.article_table.setItem(1,0,QTableWidgetItem("Second Article"))
+        self.article_table.setItem(2,0,QTableWidgetItem("Third Article"))
+        self.article_table.setItem(3,0,QTableWidgetItem("Fourth Article"))
+        self.article_table.setItem(4,0,QTableWidgetItem("Fifth Article"))
+        self.article_table.setItem(5,0,QTableWidgetItem("Sixth Article"))
 
-        if name == "":
-            QMessageBox.information(self, "Emty Field",
-                            "Please enter a name and address.")
-            return
-        else:
-            QMessageBox.information(self, "Success!",
-                                    "Hello %s!" % name)
+
+        self.article_table.cellClicked.connect(self.cellClick)
+
+
+    def refresh(self):
+        return
+
+    def open_screen(self):
+        return
+
+#    def get_items(self, search_term):
+#        arFinder.cmds(lookup=search_term)
+
+    def cellClick(self, row, col):
+        print("I am clicked")
+
 
 if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
 
-    screen = Form()
+    screen = Articles()
     screen.show()
 
     sys.exit(app.exec_())
