@@ -11,42 +11,42 @@
     follow PEP 8 guidelines
 '''
 
-
+import sys
+from backend.arFinder import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 # Why would you import everything? Doesn't that seem a little braggerty
 
-class Articles(QWidget):
+class Table(#QTableWidget,
+            QMainWindow):
 
-    def __init__(self, parent=None):
-        super(Articles, self).__init__(parent)
+    def __init__(self, *args, parent=None):
+        QMainWindow.__init__(self)
+#        QTableWidget.__init__(self, *args)
+        self.data = []
+        self.initUI()
+#        self.set_data()
+#        self.resizeColumnsToContents()
+#        self.resizeRowsToContents()
+        # Table
 
-        # Table initialization
-        self.article_table = QTableWidget()
-        self.article = QTableWidgetItem()
+    def set_data(self, *args):
+        if args:
+            self.data = cmds(args)
+        else:
+            self.data = cmds(('-all', 'electrons'))
 
-        # set selection mode for contiguous cell
-        self.article_table.setSelectionMode(
-                QAbstractItemView.ContiguousSelection)
+        for m, n in enumerate(self.data):
+            newitem = QTableWidgetItem(n.__str__())
+            self.setItem(1,m, newitem)
 
+    def initUI(self):
 
-        self.article_table.setWindowTitle("arFinder")
-        self.article_table.resize(300,300)
-        self.article_table.setRowCount(6)
-        self.article_table.setColumnCount(6)
+        self.statusBar().showMessage("ready")
+        self.setGeometry(300, 300, 250, 150)
 
-        self.article_table.setSpan(0,1,5,4)
-
-        self.article_table.setItem(0,0,QTableWidgetItem("First Article"))
-        self.article_table.setItem(1,0,QTableWidgetItem("Second Article"))
-        self.article_table.setItem(2,0,QTableWidgetItem("Third Article"))
-        self.article_table.setItem(3,0,QTableWidgetItem("Fourth Article"))
-        self.article_table.setItem(4,0,QTableWidgetItem("Fifth Article"))
-        self.article_table.setItem(5,0,QTableWidgetItem("Sixth Article"))
-
-
-        self.article_table.cellClicked.connect(self.cellClick)
+        self.setWindowTitle("Statusbar")
 
 
     def refresh(self):
@@ -61,13 +61,11 @@ class Articles(QWidget):
     def cellClick(self, row, col):
         print("I am clicked")
 
+def main(args):
+    app = QApplication(args)
+    table = Table(10, 5)
+    table.show()
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
-    import sys
-
-    app = QApplication(sys.argv)
-
-    screen = Articles()
-    screen.show()
-
-    sys.exit(app.exec_())
+    main(sys.argv)
