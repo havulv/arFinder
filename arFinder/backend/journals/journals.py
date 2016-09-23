@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 """
 	A class for Journal objects. With the main focus being manipulating
