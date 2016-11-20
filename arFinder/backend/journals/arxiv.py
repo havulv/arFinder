@@ -33,29 +33,45 @@ class arXiv(journal):
         self.base_url = u"http://export.arxiv.org/api/query?"
 
 
-    def _bldquery(self, ti=None, au=None, ABS=None, co=None,
-                jr=None, cat=None, rn=None, ID=None, All=None):
-        """ Builds the query to search the arxiv """
+    def _bldquery(self, title=None, author=None, abstract=None,
+            comment=None, journal_reference=None, category=None,
+            report_number=None, id_number=None, All=None):
+        """
+            Builds the query to search the arxiv. The search params
+            should be either a False boolean or a list of strings
+        """
 
         srch_str = "search_query="
 
-        srchDict = {'ti':ti,'au':au,'abs':ABS,'co':co,'jr':jr,'cat':cat,'rn':rn,'id':ID,'all':All}
+        srchDict = {'ti':title,'au':author,'abs':abstract,'co':comment,
+            'jr':journal_reference,'cat':category,'rn':report_number,
+            'id':id_number,'all':All}
 
-        for i in srchDict:
-            if bool(srchDict[i]):
-                if '(' in srchDict[i] or ')' in srchDict[i]:
-                    srchDict[i].replace('(', '%28')
-                    srchDict[i].replace(')', '%29')
-                if '\"' in srchDict[i]:
-                    srchDict[i].replace('\"', '%22')
-                if ' ' in srchDict[i]:
-                    srchDict[i].replace(' ', '+')
-                srch_str += i+":"+srchDict[i]+"&"
+        for k,v in srchDict.items():
+            if isinstance(v, list):
+                v_tmp = []
+                for ind in range(len(v)):
+                    if " " in v[ind]:
+                        temp = v[ind].split(" ")
+                    else:
+                        temp = [v[ind]]
+                    for i in temp:
+                        v_tmp.append(i)
+                v = v_tmp
+                for value in v:
+                    value = value.strip()
+                    value.replace('(', '%28')
+                    value.replace(')', '%29')
+                    value.replace('\"', '%22')
 
-        if srch_str[-1] == "&":
-            srch_str = srch_str[0:len(srch_str)-1]
+        srchDict = [[k,v] for k,v in filter(lambda x: isinstance(
+                                        x[1], list), srchDict.items())]
+        srchDict = [[k,v] for k,args in srchDict for v in args]
+        srch_str += "+AND+".join(map(":".join, srchDict))
 
         self.search_url = self.base_url+srch_str
+        print(self.search_url)
+        return self.search_url
 
 
     def _clean(self, article, tag):
@@ -88,10 +104,12 @@ class arXiv(journal):
             self._clean(self.articles[-1], tag)
 
 
-    def find(self, ti=None, au=None, ABS=None, co=None, jr=None, cat=None, rn=None, ID=None, All=None):
+    def find(self,  title=None, author=None, abstract=None,
+            comment=None, journal_reference=None, category=None,
+            report_number=None, id_number=None, All=None):
         """ The public method to actually find the articles """
 
-        self._bldquery(ti,au,ABS,co,jr,cat,rn,ID,All)
+        self._bldquery(title,author,abstract,comment,journal_reference,category,report_number,id_number,All)
         self._search()
 
 

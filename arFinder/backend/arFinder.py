@@ -32,71 +32,51 @@ Next:
 []	Implement Error Handling across all files
 
 """
-
+import argparse
 
 import sys
 from journals.arxiv import arXiv
 
-def none(dct):
-    """ Handle None types for parameters of journal.find """
-    for i,v in dct.items():
-        if v != None:
-            return False
-    return True
+def main():
+    args = parse_args()
+    search = arXiv()
+    search.find(**vars(args))
+    print(search.articles)
 
-
-def cmds(lookup=sys.argv):
-    """
-    Simple implementation of searching a journal for a specific query (only as it applies to the Arxiv currently)
-    -ti = title
-    -au = author
-    -abs = abstract
-    -co = comment
-    -jr = journal reference
-    -cat = subject category
-    -rn = report number
-    -id = identification number
-    -all = all of the above
-        (All of these parameters are strings)
-
-    Please see the specific class entry on the return value of the journal
-    """
-
-    try: #Can be implemented with a help message [fix this]
-        search = arXiv()
-        SrchPrm = query(lookup)
-
-        if none(SrchPrm):
-            raise ValueError("You must input some value -- TODO: implement \
-                                                                help message")
-
-        search.find(ti=SrchPrm['-ti'], au=SrchPrm['-au'], ABS=SrchPrm['-abs'],
-                    co=SrchPrm['-co'] , jr=SrchPrm['-jr'], cat=SrchPrm['-cat'],
-                    rn=SrchPrm['-rn'], ID=SrchPrm['-id'], All=SrchPrm['-all'])
-        return(search.articles)
-
-    except IndexError as e:
-        return("An error occurred %s, please implement logging and unit testing." % e)
-
-def query(args):
-    """
-    Parse command line arguments for search query (only as it applies to arxiv)
-    """
-
-    params = {'-ti': None, '-au': None, '-abs': None, '-co': None, '-jr': None,
-                            '-cat': None, '-rn': None, '-id': None,'-all': None }
-
-    for i in range(len(args)):
-        if args[i] in  params.keys():
-            if args[i+1] not in params.keys():
-                params[args[i]] = args[i+1]
-
-    return params
-
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description=("Search the arxiv for papers on a certain topic."))
+    parser.add_argument(
+        "-ti", "--title", nargs=1, type=str, help=("Search the arxiv "
+            "for a keyword in the title of the article"))
+    parser.add_argument(
+        "-a", "--All", nargs=1, type=str, help=("Search all possible"
+            "search parameters for the argument"))
+    parser.add_argument(
+        "-au", "--author", nargs=1, type=str, help=("Search the arxiv "
+            "for a specific author"))
+    parser.add_argument(
+        "-abs", "--abstract", nargs=1, type=str, help=("Search the "
+            "arxiv for a keyword in the abstract of the article"))
+    parser.add_argument(
+        "-co", "--comment", nargs=1, type=str, help=("Search the arxiv"
+            " for a keyword in the comments of the article"))
+    parser.add_argument(
+        "-jr", "--journal-reference", nargs=1, type=str, help=("Search"
+            "the arxiv for a specifc journal reference"))
+    parser.add_argument(
+        "-cat", "--category", nargs=1, type=str, help=("Search the "
+            "arxiv for a specific article category"))
+        #TODO add a subparser for category instances
+    parser.add_argument(
+        "-rn", "--report-number", nargs=1, type=int, help=("Search the"
+            "arxiv for a specific report number"))
+    parser.add_argument(
+        "-id", "--id-number", nargs=1, type=int, help=("Search the "
+            "arxiv for a specific id number"))
+    opts = parser.parse_args()
+    return opts
 
 if __name__ == "__main__":
-    sample = cmds()
-    for i in sample:
-        print(i)
-    print(sample)
+    main()
 
