@@ -12,7 +12,6 @@ from datetime import datetime as tme
 
 from .journals import journal, article
 from bs4 import BeautifulSoup as bs
-import lxml
 import re
 
 class arXiv(journal):
@@ -82,7 +81,7 @@ class arXiv(journal):
     def _search(self):
         """ Do the actual searching of the arxiv """
 
-        html = bs(self._getmain(), 'lxml')
+        html = bs(self._getmain(), 'html.parser')
         for tag in html.find_all(re.compile("entry")):
             curArt = article()
             self.articles.append(curArt)

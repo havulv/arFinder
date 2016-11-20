@@ -35,7 +35,7 @@ Next:
 
 
 import sys
-from .journals.arxiv import arXiv
+from journals.arxiv import arXiv
 
 def none(dct):
     """ Handle None types for parameters of journal.find """
