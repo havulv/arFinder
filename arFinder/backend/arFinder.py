@@ -34,7 +34,7 @@ Next:
 """
 import argparse
 
-import cmd, readline
+import cmd
 
 import sys
 from journals.arxiv import arXiv
@@ -45,19 +45,31 @@ class ArCmd(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
-        jrnl = ArXiv()
+        self.jrnl = arXiv()
 
     def do_search(self, args):
+        ('Search for a specific article based on title, all, author,'
+        'abstract, comment, journal_reference, category, report_number'
+        ' id_number, or report_number')
         self.jrnl.find(**parse(args))
+        print(self.jrnl.name)
+        for article in self.jrnl.articles:
+            print("{:<4} {:^30} {:>13}".format(article.id,
+                                article.title, article.published))
+            print(article.abstract+"\n")
 
+    def do_topiclist(self, args):
+        ('Print out the topics contined in the journal'
+        '\nCurrently deprecated')
+        for topic in self.jrnl.topics:
+            print(topic)
 
-
-    def do_help(self, args):
-
+    def do_exit(self, args):
+        sys.exit()
 
 def parse(args):
     args = args.split(" ")
-    return dict(zip(args[::2], args[1:][::2]))
+    return {k:[v] for k,v in zip(args[::2], args[1:][::2])}
 
 def main():
     args = parse_args()
@@ -68,13 +80,14 @@ def main():
             client = ArCmd()
             client.cmdloop()
         except Exception:
-            if "debug" in args:
+            if args["debug"]:
                 import pdb
                 pdb.set_trace()
             else:
                 raise
     else:
         search = arXiv()
+        args.pop("debug")
         search.find(**args)
         print(search.articles)
 

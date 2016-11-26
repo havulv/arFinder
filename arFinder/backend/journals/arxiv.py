@@ -70,7 +70,6 @@ class arXiv(journal):
         srch_str += "+AND+".join(map(":".join, srchDict))
 
         self.search_url = self.base_url+srch_str
-        print(self.search_url)
         return self.search_url
 
 
@@ -83,7 +82,7 @@ class arXiv(journal):
         article.published = tme.strptime(tag.find(re.compile('published'
                                             )).string, "%Y-%m-%dT%H:%M:%SZ")
         article.abstract = tag.find(re.compile('summary')).string
-        article.id = tag.find(re.compile('id')).string
+        article.id = tag.find(re.compile('id')).string.split('/')[-1]
         article.link = tag.find(title=re.compile('pdf'))['href']
         for tag in tag.find_all(re.compile("author")):
             article.authors.append(tag.find(re.compile("name")).string)
