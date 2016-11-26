@@ -34,14 +34,49 @@ Next:
 """
 import argparse
 
+import cmd, readline
+
 import sys
 from journals.arxiv import arXiv
 
+class ArCmd(cmd.Cmd):
+    intro = 'Welcome to the arXiv paper search and save. Type help or ? to list commands.\n'
+    prompt = ' R|F|R :: '
+
+    def __init__(self):
+        cmd.Cmd.__init__(self)
+        jrnl = ArXiv()
+
+    def do_search(self, args):
+        self.jrnl.find(**parse(args))
+
+
+
+    def do_help(self, args):
+
+
+def parse(args):
+    args = args.split(" ")
+    return dict(zip(args[::2], args[1:][::2]))
+
 def main():
     args = parse_args()
-    search = arXiv()
-    search.find(**vars(args))
-    print(search.articles)
+
+    if not any([ val if key != "debug" else False for
+                                key, val in args.items()]):
+        try:
+            client = ArCmd()
+            client.cmdloop()
+        except Exception:
+            if "debug" in args:
+                import pdb
+                pdb.set_trace()
+            else:
+                raise
+    else:
+        search = arXiv()
+        search.find(**args)
+        print(search.articles)
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -74,8 +109,11 @@ def parse_args():
     parser.add_argument(
         "-id", "--id-number", nargs=1, type=int, help=("Search the "
             "arxiv for a specific id number"))
+    parser.add_argument(
+        "-d",  "--debug", action="store_true", default=False, help=(
+        "Turn on debug mode."))
     opts = parser.parse_args()
-    return opts
+    return dict(vars(opts))
 
 if __name__ == "__main__":
     main()
