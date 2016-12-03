@@ -37,7 +37,7 @@ import argparse
 import cmd
 
 import sys
-from journals.arxiv import arXiv
+from cls.arxiv import arXiv
 
 class ArCmd(cmd.Cmd):
     intro = 'Welcome to the arXiv paper search and save. Type help or ? to list commands.\n'
