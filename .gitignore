@@ -9,3 +9,6 @@ bin/*
 bin
 !arFinder/bin/
 pip-selfcheck.json
+arFinder.egg-info
+dist/*
+dist
