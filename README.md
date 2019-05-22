@@ -1,10 +1,14 @@
-arFinder
-========
+# arFinder
 
 An article search and save for the arXiv.
 
-Usage
------
+## Installation
+
+```
+    pip install arFinder
+```
+
+## Usage
 
 Currently supports search by title (-ti), author (-au), abstract (-abs), comment (-co), journal reference (-jr), subject category (-cat), report number (-rn), identification number (-id), or all of the previous (-all). Below are some sample usages:
 
