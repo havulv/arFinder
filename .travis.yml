@@ -1,0 +1,32 @@
+language: python
+
+python:
+    - "3.7"
+
+os:
+    - linux
+    - osx
+    - windows
+
+env:
+    global:
+        - [[ ":$PATH:" != *":/home/build/.local/bin:"* ]] && PATH=/home/build/.local/bin:$PATH
+
+before_install:
+    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update        ; fi
+
+install:
+    - pip install --user virtualenv
+    - virtualenv venv
+    - source/bin/activate
+
+jobs:
+    include:
+        - stage: test
+          script:
+              - pip install nosetests
+              - cd arFinder
+              - nosetests
+        - stage: test install 
+          script:
+              - pip install arFinder
