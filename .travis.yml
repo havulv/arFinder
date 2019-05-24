@@ -8,9 +8,8 @@ os:
     - osx
     - windows
 
-env:
-    global:
-        - if [[ ":$PATH:" != *":/home/build/.local/bin:"* ]]; then PATH=/home/build/.local/bin:$PATH; fi;
+before_install:
+    - [[ ":$PATH:" != *":/home/build/.local/bin:"* ]] && PATH=/home/build/.local/bin:$PATH
 
 install:
     - pip install --user virtualenv
