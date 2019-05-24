@@ -1,12 +1,13 @@
 language: python
 
-python:
-    - "3.7"
+# Why are people lagging behind on 3.6. This is ridiculous. Using generic install
+# python:
+#     - "3.6"
 
 os:
     - linux
     - osx
-    - windows
+#   - windows Apparently python on windows is not supported. wtf
 
 before_install:
     - if [[ ":$PATH:" != *":/home/build/.local/bin:"* ]]; then PATH=/home/build/.local/bin:$PATH; fi;
