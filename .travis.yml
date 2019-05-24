@@ -1,9 +1,9 @@
 language: python
 
-python:
-  - "3.7"
-
-#os:
+#python:
+#  - "3.7"
+#
+##os:
 #  - linux
 #  - osx
 #  - windows
