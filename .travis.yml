@@ -16,6 +16,9 @@ install:
   - virtualenv venv
   - source/bin/activate
 
+script:
+  - echo "Hello World"
+
 #jobs:
 #  include:
 #    - stage: test
