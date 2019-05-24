@@ -16,14 +16,14 @@ install:
   - virtualenv venv
   - source/bin/activate
 
-jobs:
-  include:
-    - stage: test
-      script:
-        - pip install nosetests
-        - cd arFinder
-        - nosetests
-    - stage: test_install 
-      script:
-        - pip install arFinder
-
+#jobs:
+#  include:
+#    - stage: test
+#      script:
+#        - pip install nosetests
+#        - cd arFinder
+#        - nosetests
+#    - stage: test_install 
+#      script:
+#        - pip install arFinder
+#
