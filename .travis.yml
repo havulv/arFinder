@@ -24,7 +24,7 @@ jobs:
               - pip install nosetests
               - cd arFinder
               - nosetests
-        - stage: test install 
+        - stage: test_install 
           script:
               - pip install arFinder
 
