@@ -15,7 +15,7 @@ before_install:
 install:
     - pip install virtualenv
     - virtualenv venv
-    - source/bin/activate
+    - source /bin/activate
 
 matrix:
     include:
