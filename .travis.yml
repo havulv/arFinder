@@ -11,11 +11,12 @@ os:
 env:
   - [[ ":$PATH:" != *":/home/build/.local/bin:"* ]] && PATH=/home/build/.local/bin:$PATH
 
-install:
-  - pip install --user virtualenv
-  - virtualenv venv
-  - source/bin/activate
-
+#install:
+#  - pip install --user virtualenv
+#  - virtualenv venv
+#  - source/bin/activate
+#
+#
 script:
   - echo "Hello World"
 
