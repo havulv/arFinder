@@ -1,5 +1,8 @@
 language: python
 
+python:
+    - "3.7"
+
 os:
     - linux
     - osx
@@ -8,9 +11,6 @@ os:
 env:
     global:
         - [[ ":$PATH:" != *":/home/build/.local/bin:"* ]] && PATH=/home/build/.local/bin:$PATH
-
-before_install:
-    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update        ; fi
 
 install:
     - pip install --user virtualenv
