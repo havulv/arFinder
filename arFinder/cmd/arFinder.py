@@ -33,7 +33,7 @@ Next:
 
 """
 
-from cls.arxiv import ArXiv
+from .cls.arxiv import ArXiv
 import argparse
 import cmd
 import sys
@@ -75,26 +75,32 @@ class ArCmd(cmd.Cmd):
         sys.exit()
 
 
-def main():
-    args = parse_args()
+def main(args):
 
-    if not any([
-            val if key != "debug" else False for
-            key, val in args.items()]):
+    if args.command:
         try:
             client = ArCmd()
             client.cmdloop()
         except Exception:
-            if args["debug"]:
+            if args.debug:
                 import pdb
                 pdb.set_trace()
             else:
                 raise
-    else:
+
+    elif any(map(
+            lambda x: False if x is None else x,
+            vars(args).values())):
+        search_args = vars(args)
+        for cmd_arg in ['debug', 'command']:
+            search_args.pop(cmd_arg)
         search = ArXiv()
-        args.pop("debug")
-        search.find(**args)
-        print(search.articles)
+        search.find(**search_args)
+        for i, article in enumerate(search.articles, start=1):
+            print(f"{i}. {article}")
+
+    else:
+        print("No arguments entered.")
 
 
 def parse_args(args):
@@ -131,6 +137,9 @@ def parse_args(args):
     parser.add_argument(
         "-d", "--debug", action="store_true", default=False,
         help=("Turn on debug mode."))
+    parser.add_argument(
+        '-c', '--command', action='store_true',
+        help=("Start the command line interface for searching and saving"))
     return parser.parse_args(args)
 
 

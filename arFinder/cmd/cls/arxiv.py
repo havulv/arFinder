@@ -93,7 +93,7 @@ class ArXiv(Journal):
 
         article.link = tag.find(title=re.compile('pdf'))['href']
 
-        for tag in tag.findall_(re.compile("author")):
+        for tag in tag.find_all("author"):
             article.authors.append(tag.find(re.compile("name")).string)
         try:
             article.topics = re.split(r'\.', tag.find(re.compile('category'))['term'])
@@ -105,7 +105,7 @@ class ArXiv(Journal):
         ''' Do the actual searching of the arxiv '''
 
         html = bs(self._getmain(), 'html.parser')
-        for tag in html.findall_(re.compile("entry")):
+        for tag in html.find_all('entry'):
             cur_art = Article()
             self.articles.append(cur_art)
             self._clean(self.articles[-1], tag)
