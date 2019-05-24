@@ -30,3 +30,4 @@ jobs:
         - stage: test install 
           script:
               - pip install arFinder
+
