@@ -8,9 +8,9 @@ language: python
 #  - osx
 #  - windows
 #
-env:
-  - [[ ":$PATH:" != *":/home/build/.local/bin:"* ]] && PATH=/home/build/.local/bin:$PATH
-
+#env:
+#  - [[ ":$PATH:" != *":/home/build/.local/bin:"* ]] && PATH=/home/build/.local/bin:$PATH
+#
 #install:
 #  - pip install --user virtualenv
 #  - virtualenv venv
