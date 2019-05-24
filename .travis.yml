@@ -9,7 +9,7 @@ os:
     - windows
 
 before_install:
-    - [[ ":$PATH:" != *":/home/build/.local/bin:"* ]] && PATH=/home/build/.local/bin:$PATH
+    - if [[ ":$PATH:" != *":/home/build/.local/bin:"* ]]; then PATH=/home/build/.local/bin:$PATH; fi;
 
 install:
     - pip install --user virtualenv
