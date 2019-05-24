@@ -1,33 +1,30 @@
 language: python
 
-#python:
-#  - "3.7"
-#
-##os:
-#  - linux
-#  - osx
-#  - windows
-#
-#env:
-#  - [[ ":$PATH:" != *":/home/build/.local/bin:"* ]] && PATH=/home/build/.local/bin:$PATH
-#
-#install:
-#  - pip install --user virtualenv
-#  - virtualenv venv
-#  - source/bin/activate
-#
-#
-script:
-  - echo "Hello World"
+python:
+    - "3.7"
 
-#jobs:
-#  include:
-#    - stage: test
-#      script:
-#        - pip install nosetests
-#        - cd arFinder
-#        - nosetests
-#    - stage: test_install 
-#      script:
-#        - pip install arFinder
-#
+os:
+    - linux
+    - osx
+    - windows
+
+env:
+    global:
+        - if [[ ":$PATH:" != *":/home/build/.local/bin:"* ]]; then PATH=/home/build/.local/bin:$PATH; fi;
+
+install:
+    - pip install --user virtualenv
+    - virtualenv venv
+    - source/bin/activate
+
+jobs:
+    include:
+        - stage: test
+          script:
+              - pip install nosetests
+              - cd arFinder
+              - nosetests
+        - stage: test install 
+          script:
+              - pip install arFinder
+
