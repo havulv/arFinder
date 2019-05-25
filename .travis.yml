@@ -13,7 +13,7 @@ before_install:
     - if [[ ":$PATH:" != *":/home/build/.local/bin:"* ]]; then PATH=/home/build/.local/bin:$PATH; fi;
 
 
-matrix:
+jobs:
     include:
     - stage: "Test"
       script:
@@ -22,9 +22,8 @@ matrix:
           - virtualenv venv
           - ls -aln
           - source ./bin/activate
-          - pip install nosetests
+          - pip install nose
           - nosetests
-    - stage: "Test Install"
       script:
           - pip install arFinder
 
