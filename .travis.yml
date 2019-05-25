@@ -6,13 +6,13 @@ language: python
 
 os:
     - linux
-    - osx
+#   - osx apparently 3.6 can't be downloaded? wtf.
 #   - windows Apparently python on windows is not supported. wtf
 
 before_install:
     - if [[ ":$PATH:" != *":/home/build/.local/bin:"* ]]; then PATH=/home/build/.local/bin:$PATH; fi;
     - pip install virtualenv
-    - virtualenv venv
+    - virtualenv .
     - ls -aln
 
 install:
@@ -22,5 +22,6 @@ install:
 
 
 script:
+    - cd arFinder
     - nosetests
 
