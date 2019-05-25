@@ -11,19 +11,16 @@ os:
 
 before_install:
     - if [[ ":$PATH:" != *":/home/build/.local/bin:"* ]]; then PATH=/home/build/.local/bin:$PATH; fi;
+    - pip install virtualenv
+    - virtualenv venv
+    - ls -aln
+
+install:
+    - source ./bin/activate
+    - pip install -r requirements.txt
+    - pip install .
 
 
-jobs:
-    include:
-    - stage: "Test"
-      script:
-          - cd arFinder
-          - pip install virtualenv
-          - virtualenv venv
-          - ls -aln
-          - source ./bin/activate
-          - pip install nose
-          - nosetests
-      script:
-          - pip install arFinder
+script:
+    - nosetests
 
