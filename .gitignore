@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+man/
 bin/
 include/
 lib64/
